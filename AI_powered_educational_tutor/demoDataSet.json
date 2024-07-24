@@ -1,0 +1,107 @@
+[
+  {
+    "Mathematics": {
+      "Maths": {
+        "Algebra": "Basic concepts, equations, and problem-solving exercises",
+        "Geometry": "Shapes, properties, theorems, and practice questions",
+        "Calculus": "Differentiation, integration, and application problems",
+        "Statistics": "Descriptive statistics, probability, and data analysis tasks"
+      }
+    },
+    "Science": {
+      "Biology": {
+        "Cell Biology": "Structure, function, and cell processes",
+        "Genetics": "Mendelian genetics, DNA structure, and genetic disorders",
+        "Ecology": "Ecosystems, food chains, and environmental issues"
+      },
+      "Physics": {
+        "Mechanics": "Motion, forces, and energy",
+        "Electricity and Magnetism": "Circuits, fields, and electromagnetic waves",
+        "Thermodynamics": "Laws, heat transfer, and engine efficiency"
+      },
+      "Chemistry": {
+        "Atomic Structure": "Periodic table, bonding, and chemical reactions",
+        "Organic Chemistry": "Hydrocarbons, functional groups, and reaction mechanisms",
+        "Inorganic Chemistry": "Metals, nonmetals, and coordination compounds"
+      }
+    },
+    "History": {
+      "Ancient History": {
+        "Mesopotamia": "Civilization development, writing, and early societies",
+        "Ancient Egypt": "Pharaohs, pyramids, and religious beliefs",
+        "Roman Empire": "Republic to Empire transition, key figures, and societal structure"
+      },
+      "Modern History": {
+        "World Wars": "Causes, major events, and consequences",
+        "Industrial Revolution": "Technological advancements and social changes",
+        "Cold War": "Ideological conflict, key events, and resolution"
+      }
+    },
+    "Literature": {
+      "Classics": {
+        "Shakespeare": "Summaries and analyses of major plays (e.g., 'Romeo and Juliet,' 'Hamlet')",
+        "Greek Tragedies": "Summaries and themes (e.g., 'Oedipus Rex,' 'Antigone')"
+      },
+      "Modern Literature": {
+        "20th Century Novels": "Summaries and analyses (e.g., '1984,' 'To Kill a Mockingbird')",
+        "Poetry": "Analysis of major poems and poets (e.g., Robert Frost, Maya Angelou)"
+      }
+    },
+    "Computer Science": {
+      "Programming": {
+        "Python": "Basic syntax, data structures, and algorithms",
+        "JavaScript": "Fundamentals, DOM manipulation, and event handling",
+        "Java": "Object-oriented programming, data structures, and design patterns"
+      },
+      "Data Science": {
+        "Data Analysis": "Techniques, tools (e.g., Pandas), and visualization",
+        "Machine Learning": "Algorithms, model training, and evaluation",
+        "Databases": "SQL basics, NoSQL concepts, and database design"
+      }
+    },
+    "Languages": {
+      "Spanish": {
+        "Grammar": "Verb conjugations, sentence structure, and common phrases",
+        "Vocabulary": "Everyday words, thematic vocab lists, and pronunciation tips",
+        "Conversations": "Common dialogues and listening practice"
+      },
+      "French": {
+        "Grammar": "Verb tenses, articles, and sentence construction",
+        "Vocabulary": "Basic terms, thematic vocabulary, and pronunciation",
+        "Conversations": "Common phrases, dialogues, and cultural context"
+      }
+    },
+    "Social Studies": {
+      "Geography": {
+        "Physical Geography": "Landforms, climate zones, and ecosystems",
+        "Human Geography": "Population distribution, urbanization, and cultural landscapes",
+        "Map Skills": "Reading maps, using coordinates, and geographic tools"
+      },
+      "Civics": {
+        "Government Structure": "Types of governments, branches, and functions",
+        "Civic Responsibilities": "Rights, duties, and civic participation",
+        "Current Events": "Analysis of recent news and its impact on society"
+      }
+    },
+    "Art": {
+      "Art History": {
+        "Renaissance Art": "Key artists, techniques, and artworks",
+        "Modern Art": "Movements, influential artists, and major works"
+      },
+      "Art Techniques": {
+        "Drawing": "Basics of line, shape, and shading",
+        "Painting": "Color theory, brush techniques, and composition"
+      }
+    },
+    "Music": {
+      "Music Theory": {
+        "Notation": "Reading music, understanding scales, and key signatures",
+        "Harmony": "Chords, progressions, and harmonization"
+      },
+      "Instruments": {
+        "Piano": "Basic techniques, scales, and simple pieces",
+        "Guitar": "Chords, strumming patterns, and basic songs"
+      }
+    }
+  }
+]
