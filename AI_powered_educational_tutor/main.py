@@ -32,74 +32,43 @@ retriever = db.as_retriever(
     search_kwargs={"k": 3},
 )
 
+chat_history=[]
+
 # Create a structured Chat Agent with Conversation Buffer Memory
 # ConversationBufferMemory stores the conversation history, allowing the agent to maintain context across interactions
 memory = ConversationBufferMemory(
     memory_key="chat_history", return_messages=True)
 
-# Define the QA system prompt as a ChatPromptTemplate
-secondary_agent_prompt = ChatPromptTemplate.from_messages(
-    [
-        SystemMessage(
-            content=(
-                "You are a document reader specialist. Skim over the retrieved context and identify the subject in the file. "
-                "List down the headings and subheadings of the context that matches the given input."
-            )
-        ),
-    ]
-)
-
 # Define a prompt to determine the nature of the query
-determine_course_query_prompt = (
-    "You are an educational content creator agent. Your task is to classify queries into two categories:" "subject-specific and general. Follow these steps:"
+determine_course_query_prompt = ChatPromptTemplate.from_messages([
+    SystemMessage(content="You are an educational assistant. Your task is to help users with their queries about various subjects. Use the Subject Tool when you need specific information about a subject. Provide concise and informative responses."),
+    MessagesPlaceholder(variable_name="chat_history"),
+    HumanMessage(content="{input}"),
+    MessagesPlaceholder(variable_name="agent_scratchpad")
+])
 
-    "1. Identify if the query pertains to a specific subject (e.g., math, history, biology) or if it is "
-    "a general inquiry."
-    "2. If the query is subject-specific, classify it into the appropriate subject category."
-    "3. Provide a brief explanation of your classification decision."
-)
-
-# Define a very simple tool function that returns the current time
 def get_subject_description(input_text):
     """Returns the subject categories and subcategories"""
-    print("input_text", input_text)
-    # agent = create_react_agent(
-    #     llm=llm,
-    #     prompt=qa_system_prompt_template,
-    #     verbose=True
-    # )
-    secondary_agent = create_react_agent(
-        llm=llm,
-        prompt=secondary_agent_prompt,
-        verbose=True
-    )
-    secondary_agent_executor = AgentExecutor(agent=secondary_agent, tools=[], verbose=True)
-    
-    # Use the secondary agent to perform the search
-    result = secondary_agent_executor.invoke({"input": input_text})
-    
-    print("----Result----")
-    print(result)
-    return result
-
-    memory.chat_memory.add_message(HumanMessage(content=query))
-
-    # Invoke the agent with the user input and the current chat history
-    response = agent_executor.invoke({"input": query})
-    print("Bot:", response["output"])
-
-    # Add the agent's response to the conversation memory
-    memory.chat_memory.add_message(AIMessage(content=response["output"]))
-
-    # subject_prompt = ChatPromptTemplate
-    return
-
-    # result = AgentExecutor.from_agent_and_tools(
-    #     agent=agent, tools=tools, handle_parsing_errors=True,
-    # )
-
-    # Convert input to the required format
-    # return result
+    try:
+        print("Input text is:", input_text)
+        # Retrieve relevant documents from the Chroma database
+        docs = db.similarity_search(input_text, k=3)
+        secondaryPrompt = ChatPromptTemplate.from_messages([
+            SystemMessage(content="You are a document reader specialist. Your task is to analyze the following input text "
+                "as if it were part of a larger document. Identify the main subject, and list any relevant "
+                "headings, subheadings, or key concepts that would likely be associated with this topic "
+                "in an educational context. If the input is related to mathematics, focus on mathematical "
+                "concepts, theorems, or branches that are relevant. Provide a concise summary of your findings."),
+            HumanMessage(content="{input}\n\nContext: {context}")
+        ])
+        messages = secondaryPrompt.format_messages(input=input_text)
+        result = llm.invoke(messages)
+        print("----Result----")
+        print(result.content)
+        return result.content
+    except Exception as e:
+        print(f"Error in get_subject_description: {e}")
+        return "An error occurred while processing your request."
 
 # List of tools available to the agent
 tools = [
@@ -114,8 +83,6 @@ tools = [
 # It combines the language model (llm), tools, and prompt to create an interactive agent
 agent = create_structured_chat_agent(llm=llm, tools=tools, prompt=prompt)
 
-# system_message = SystemMessage(content="You are a helpful AI assistant.")
-# chat_history = []
 
 # AgentExecutor is responsible for managing the interaction between the user input, the agent, and the tools
 # It also handles memory to ensure context is maintained throughout the conversation
@@ -123,7 +90,6 @@ agent_executor = AgentExecutor.from_agent_and_tools(
     agent=agent,
     tools=tools,
     verbose=True,
-    memory=memory,  # Use the conversation memory to maintain context
     handle_parsing_errors=True,  # Handle any parsing errors gracefully
 )
 
@@ -131,16 +97,19 @@ while True:
     query = input("You: ")
     if query.lower() == "exit":
         break
-    # chat_history.append(HumanMessage(content=query))  # Add user message
-    # Add the user's message to the conversation memory
-    memory.chat_memory.add_message(HumanMessage(content=query))
 
     # Invoke the agent with the user input and the current chat history
-    response = agent_executor.invoke({"input": query})
-    print("Bot:", response["output"])
+    response = agent_executor.invoke({"input": query, "chat_history": chat_history})
+    print("Bot:", response["output"]) 
+    
+    # Update the chat history
+    chat_history.append(HumanMessage(content=query))
+    chat_history.append(SystemMessage(content=response["output"]))
 
+    # Add the user's message to the conversation memory
+    # memory.chat_memory.add_message(HumanMessage(content=query))
     # Add the agent's response to the conversation memory
-    memory.chat_memory.add_message(AIMessage(content=response["output"]))
+    # memory.chat_memory.add_message(AIMessage(content=response["output"]))
     
 
     # Get AI response to determine if it's a course query
