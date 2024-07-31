@@ -29,7 +29,7 @@ prompt = hub.pull("hwchase17/structured-chat-agent")
 
 retriever = db.as_retriever(
     search_type="similarity",
-    search_kwargs={"k": 3},
+    # search_kwargs={"k": 3},
 )
 
 chat_history=[]
